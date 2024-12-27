@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { fontFamily } from "tailwindcss/defaultTheme";
 
 export default {
   content: [
@@ -11,6 +12,13 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primary: "#B22222", // Hinzugefügt für rote Überschriften
+        link: "#1E90FF", // Hinzugefügt für Links
+      },
+      fontFamily: {
+        fraktur: ["UnifrakturCook", ...fontFamily.serif],
+        serif: ["Playfair Display", ...fontFamily.serif],
+        sans: ["Geist", ...fontFamily.sans], // Geist als zusätzliche Schriftart
       },
     },
   },
