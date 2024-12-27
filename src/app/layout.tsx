@@ -19,13 +19,6 @@ const playfairDisplay = Playfair_Display({
   weight: ["400", "700"],
 });
 
-// UnifrakturCook ist keine Google Font, daher laden wir sie manuell:
-const unifrakturCook = {
-  fontFamily: "UnifrakturCook",
-  fontStyle: "normal",
-  fontWeight: "400",
-};
-
 export const metadata: Metadata = {
   title: "Jüdenberg Chroniken",
   description: "Eine historische Übersicht der Gemeinde Jüdenberg",
