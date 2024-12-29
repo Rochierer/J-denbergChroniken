@@ -3,19 +3,22 @@ import { client } from "@/sanity/client";
 import Link from "next/link";
 
 const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]`;
+const SLUGS_QUERY = `*[_type == "post" && defined(slug.current)]{ "slug": slug.current }`;
 
 const options = { next: { revalidate: 30 } };
 
+// Funktion, um Slugs dynamisch zu generieren
+export async function generateStaticParams() {
+  const slugs = await client.fetch<{ slug: string }[]>(SLUGS_QUERY);
+  return slugs.map(({ slug }) => ({ slug }));
+}
+
 export default async function PostPage({
   params,
-}: Awaited<{
+}: {
   params: { slug: string };
-}>) {
-  const post = await client.fetch<SanityDocument>(
-    POST_QUERY,
-    { slug: await params.slug }, // Explizit await hinzufügen
-    options
-  );
+}) {
+  const post = await client.fetch<SanityDocument>(POST_QUERY, { slug: params.slug }, options);
 
   return (
     <main className="container mx-auto min-h-screen flex items-center justify-center p-8 bg-gray-100">
