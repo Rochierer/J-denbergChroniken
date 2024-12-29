@@ -1,18 +1,29 @@
+// src/app/[slug]/page.tsx
+
 import { PortableText, type SanityDocument } from "next-sanity";
 import { client } from "@/sanity/client";
 import Link from "next/link";
 
 const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]`;
+
 const options = { next: { revalidate: 30 } };
+
+export async function generateStaticParams() {
+  const posts = await client.fetch<{ slug: { current: string } }[]>(
+    `*[_type == "post" && defined(slug.current)]{slug}`
+  );
+
+  return posts.map((post) => ({
+    slug: post.slug.current,
+  }));
+}
 
 export default async function PostPage({
   params,
 }: {
-  params: { slug: string } | Promise<{ slug: string }>;
+  params: { slug: string };
 }) {
-  // Stelle sicher, dass params aufgelöst wird
-  const resolvedParams = await params;
-  const post = await client.fetch<SanityDocument>(POST_QUERY, { slug: resolvedParams.slug }, options);
+  const post = await client.fetch<SanityDocument>(POST_QUERY, params, options);
 
   return (
     <main className="container mx-auto min-h-screen flex items-center justify-center p-8 bg-gray-100">
