@@ -8,10 +8,8 @@ const options = { next: { revalidate: 30 } };
 
 export default async function PostPage({
   params,
-}: {
-  params: { slug: string };
-}) {
-  const post = await client.fetch<SanityDocument>(POST_QUERY, params, options);
+}: Readonly<{ params: { slug: string } }>) {
+  const post = await client.fetch<SanityDocument>(POST_QUERY, { slug: params.slug }, options);
 
   return (
     <main className="container mx-auto min-h-screen flex items-center justify-center p-8 bg-gray-100">
