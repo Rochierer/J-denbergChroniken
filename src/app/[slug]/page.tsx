@@ -8,12 +8,12 @@ const options = { next: { revalidate: 30 } };
 
 export default async function PostPage({
   params,
-}: {
-  params: Awaited<{ slug: string }>;
-}) {
+}: Awaited<{
+  params: { slug: string };
+}>) {
   const post = await client.fetch<SanityDocument>(
     POST_QUERY,
-    { slug: params.slug },
+    { slug: await params.slug }, // Explizit await hinzufügen
     options
   );
 
